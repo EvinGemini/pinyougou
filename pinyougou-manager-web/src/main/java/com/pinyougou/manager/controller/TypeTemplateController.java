@@ -2,18 +2,18 @@ package com.pinyougou.manager.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.http.Result;
-import com.pinyougou.model.Brand;
-import com.pinyougou.sellergoods.service.BrandService;
+import com.pinyougou.model.TypeTemplate;
+import com.pinyougou.sellergoods.service.TypeTemplateService;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @RestController
-@RequestMapping(value = "/brand")
-public class BrandController {
+@RequestMapping(value = "/typeTemplate")
+public class TypeTemplateController {
 
     @Reference
-    private BrandService brandService;
+    private TypeTemplateService typeTemplateService;
 
 
     /***
@@ -25,7 +25,7 @@ public class BrandController {
     public Result delete(@RequestBody List<Long> ids){
         try {
             //根据ID删除数据
-            int dcount = brandService.deleteByIds(ids);
+            int dcount = typeTemplateService.deleteByIds(ids);
 
             if(dcount>0){
                 return new Result(true,"删除成功");
@@ -38,14 +38,14 @@ public class BrandController {
 
     /***
      * 修改信息
-     * @param brand
+     * @param typeTemplate
      * @return
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public Result modify(@RequestBody Brand brand){
+    public Result modify(@RequestBody TypeTemplate typeTemplate){
         try {
-            //根据ID修改Brand信息
-            int mcount = brandService.updateBrandById(brand);
+            //根据ID修改TypeTemplate信息
+            int mcount = typeTemplateService.updateTypeTemplateById(typeTemplate);
             if(mcount>0){
                 return new Result(true,"修改成功");
             }
@@ -56,21 +56,21 @@ public class BrandController {
     }
 
     /***
-     * 根据ID查询Brand信息
+     * 根据ID查询TypeTemplate信息
      * @param id
      * @return
      */
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Brand getById(@PathVariable(value = "id")long id){
-        //根据ID查询Brand信息
-        Brand brand = brandService.getOneById(id);
-        return brand;
+    public TypeTemplate getById(@PathVariable(value = "id")long id){
+        //根据ID查询TypeTemplate信息
+        TypeTemplate typeTemplate = typeTemplateService.getOneById(id);
+        return typeTemplate;
     }
 
 
     /***
-     * 增加Brand数据
-     * @param brand
+     * 增加TypeTemplate数据
+     * @param typeTemplate
      * 响应数据：success
      *                  true:成功  false：失败
      *           message
@@ -78,10 +78,10 @@ public class BrandController {
      *
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public Result add(@RequestBody Brand brand){
+    public Result add(@RequestBody TypeTemplate typeTemplate){
         try {
             //执行增加
-            int acount = brandService.add(brand);
+            int acount = typeTemplateService.add(typeTemplate);
 
             if(acount>0){
                 //增加成功
@@ -101,9 +101,9 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/list",method = RequestMethod.POST)
-    public PageInfo<Brand> list(@RequestBody Brand brand,@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+    public PageInfo<TypeTemplate> list(@RequestBody TypeTemplate typeTemplate,@RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                 @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-        return brandService.getAll(brand,page, size);
+        return typeTemplateService.getAll(typeTemplate,page, size);
     }
 
 
@@ -114,7 +114,7 @@ public class BrandController {
      * @return
      */
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public List<Brand> list() {
-        return brandService.getAll();
+    public List<TypeTemplate> list() {
+        return typeTemplateService.getAll();
     }
 }

@@ -1,5 +1,4 @@
 package com.pinyougou.sellergoods.service.impl;
-
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,82 +8,98 @@ import com.pinyougou.sellergoods.service.BrandService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
-
 import java.util.List;
 
-/********
- * author:shenkunlin
- * date:2018/8/31 18:38
- * description:深圳黑马
- * version:1.0
- ******/
 @Service
 public class BrandServiceImpl implements BrandService {
 
     @Autowired
     private BrandMapper brandMapper;
 
-    @Override
-    public List<Brand> getAll() {
-        return brandMapper.getAllBrand();
+	/**
+	 * 返回Brand全部列表
+	 * @return
+	 */
+	@Override
+    public List<Brand> getAll(){
+        return brandMapper.selectAll();
     }
 
-    @Override
-    public PageInfo<Brand> getAll(int page, int size,Brand brand) {
-        //分页
-        PageHelper.startPage(page,size);
 
-        //模糊查询
+    /***
+     * 分页返回Brand列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+	@Override
+    public PageInfo<Brand> getAll(Brand brand,int pageNum, int pageSize) {
+        //执行分页
+        PageHelper.startPage(pageNum,pageSize);
+
         Example example = new Example(Brand.class);
         Example.Criteria criteria = example.createCriteria();
-
-        //select * from tb_brand where name like '%红%' and firstChar='A'
-
-        if(brand!=null){
-            if(StringUtils.isNotBlank(brand.getName())){
-                //name模糊查询
+        if (brand != null) {
+            if (StringUtils.isNotBlank(brand.getName())) {
                 criteria.andLike("name","%"+brand.getName()+"%");
             }
-
-            if(StringUtils.isNotBlank(brand.getFirstChar())){
-                //firstChar条件判断
+            if (StringUtils.isNotBlank(brand.getFirstChar())) {
                 criteria.andEqualTo("firstChar",brand.getFirstChar());
             }
         }
-
-        //集合查询
-        List<Brand> brands = brandMapper.selectByExample(example);
-
-        //集合查询
-        //List<Brand> brands = brandMapper.selectAll();
-
-        //封装PageInfo
-        return new PageInfo<Brand>(brands);
+        //执行查询
+        List<Brand> all = brandMapper.selectByExample(example);
+        PageInfo<Brand> pageInfo = new PageInfo<Brand>(all);
+        return pageInfo;
     }
 
+
+
+    /***
+     * 增加Brand信息
+     * @param brand
+     * @return
+     */
     @Override
     public int add(Brand brand) {
-        int acount = brandMapper.insertSelective(brand);
-        System.out.println(brand);
-        return acount;
+        return brandMapper.insertSelective(brand);
     }
 
+
+    /***
+     * 根据ID查询Brand信息
+     * @param id
+     * @return
+     */
     @Override
-    public Brand getById(Long id) {
+    public Brand getOneById(Long id) {
         return brandMapper.selectByPrimaryKey(id);
     }
 
+
+    /***
+     * 根据ID修改Brand信息
+     * @param brand
+     * @return
+     */
     @Override
-    public int updateById(Brand brand) {
+    public int updateBrandById(Brand brand) {
         return brandMapper.updateByPrimaryKeySelective(brand);
     }
 
+
+    /***
+     * 根据ID批量删除Brand信息
+     * @param ids
+     * @return
+     */
     @Override
     public int deleteByIds(List<Long> ids) {
-        //批量删除 delete from tb_brand where id IN(1,343,545,45)
+        //创建Example，来构建根据ID删除数据
         Example example = new Example(Brand.class);
         Example.Criteria criteria = example.createCriteria();
 
+        //所需的SQL语句类似 delete from tb_brand where id in(1,2,5,6)
         criteria.andIn("id",ids);
         return brandMapper.deleteByExample(example);
     }
