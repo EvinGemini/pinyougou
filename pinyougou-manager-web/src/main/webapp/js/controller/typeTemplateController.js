@@ -105,4 +105,17 @@ app.controller("typeTemplateController",function($scope,$http,$controller,typeTe
             }
         });
     }
+
+    $scope.json2String=function (jsonstr) {
+        var result='';
+        var json = JSON.parse(jsonstr);
+        $.each(json,function (index,item) {
+            if (index > 0) {
+                result+='，';
+            }
+            result += item.text;
+        });
+        return result;
+    }
+
 });

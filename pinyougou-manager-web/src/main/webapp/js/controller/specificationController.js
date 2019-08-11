@@ -5,7 +5,7 @@
 app.controller("specificationController",function($scope,$http,$controller,specificationService){
 
     //定义一个集合，用于存储所有规格选项 存入entity对象中
-    //$scope.entity={specificationOptionList:[]}
+    $scope.entity={specificationOptionList:[]}
 
     //新增一行规格属性
     $scope.addTableRow=function () {

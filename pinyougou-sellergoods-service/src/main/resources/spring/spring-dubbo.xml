@@ -13,7 +13,7 @@
     <dubbo:application name="pinyougou-sellergoods-service" />
 
     <!--1、指定注册地址-->
-    <dubbo:registry address="zookeeper://192.168.25.131:2181" />
+    <dubbo:registry address="zookeeper://192.168.25.132:2181" />
 
     <!--2、暴露外部访问接口的端口和协议,访问dubbo所占用的端口，自己占用的端口-->
     <dubbo:protocol name="dubbo" port="20880" />

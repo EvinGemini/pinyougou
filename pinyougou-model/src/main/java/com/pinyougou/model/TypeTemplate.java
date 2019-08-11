@@ -122,4 +122,15 @@ public class TypeTemplate implements Serializable {
     public void setCustomAttributeItems(String customAttributeItems) {
         this.customAttributeItems = customAttributeItems == null ? null : customAttributeItems.trim();
     }
+
+    @Override
+    public String toString() {
+        return "TypeTemplate{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", specIds='" + specIds + '\'' +
+                ", brandIds='" + brandIds + '\'' +
+                ", customAttributeItems='" + customAttributeItems + '\'' +
+                '}';
+    }
 }

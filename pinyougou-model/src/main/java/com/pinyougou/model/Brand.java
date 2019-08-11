@@ -49,6 +49,10 @@ public class Brand implements Serializable {
     public String getName() {
         return name;
     }
+    public String getText() {
+        return name;
+    }
+
 
     /**
      * 设置品牌名称
@@ -85,4 +89,6 @@ public class Brand implements Serializable {
                 ", firstChar='" + firstChar + '\'' +
                 '}';
     }
+
+
 }
