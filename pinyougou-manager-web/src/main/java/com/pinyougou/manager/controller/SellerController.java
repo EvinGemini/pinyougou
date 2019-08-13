@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.pinyougou.http.Result;
 import com.pinyougou.model.Seller;
 import com.pinyougou.sellergoods.service.SellerService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class SellerController {
      * @return
      */
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Seller getById(@PathVariable(value = "id")long id){
+    public Seller getById(@PathVariable(value = "id")String id){
         //根据ID查询Seller信息
         Seller seller = sellerService.getOneById(id);
         return seller;
@@ -116,5 +117,23 @@ public class SellerController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<Seller> list() {
         return sellerService.getAll();
+    }
+
+    /***
+     * 根据id修改商家状态
+     * @return
+     */
+    @RequestMapping(value = "/status/{id}/{status}")
+    public Result updateStatus(@PathVariable("id")String sellerId,@PathVariable("status") String status) {
+        try {
+            //根据ID修改Seller信息
+            int mcount = sellerService.updateStatus(sellerId,status);
+            if(mcount>0){
+                return new Result(true,"修改成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Result(false,"修改失败");
     }
 }

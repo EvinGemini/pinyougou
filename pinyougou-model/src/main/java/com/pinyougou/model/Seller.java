@@ -8,6 +8,15 @@ import java.util.Date;
 
 @Table(name = "tb_seller")
 public class Seller implements Serializable {
+    // 0：未审核 1：已审核 2：审核未通过 3：关闭
+    public static final String SELLER_UNCHECKED = "0";
+    public static final String SELLER_CHECKED = "1";
+    public static final String SELLER_UNAPPROVE  = "2";
+    public static final String SELLER_CLOSE  = "3";
+
+
+
+
     /**
      * 用户ID
      */

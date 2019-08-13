@@ -60,4 +60,16 @@ app.controller("sellerController",function($scope,$http,$controller,sellerServic
             }
         });
     }
+
+    //根据id修改商家状态
+    $scope.updateStatus=function(id,status){
+        sellerService.updateStatus(id,status).success(function(response){
+            //判断状态
+            if(response.success){
+                $scope.reloadList();
+            }else{
+                alert(response.message);
+            }
+        });
+    }
 });

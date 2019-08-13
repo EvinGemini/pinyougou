@@ -8,6 +8,8 @@ import com.pinyougou.sellergoods.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,6 +54,9 @@ public class SellerServiceImpl implements SellerService {
      */
     @Override
     public int add(Seller seller) {
+        //设置初始化状态
+        seller.setStatus(Seller.SELLER_UNCHECKED);
+        seller.setCreateTime(new Date());
         return sellerMapper.insertSelective(seller);
     }
 
@@ -62,7 +67,7 @@ public class SellerServiceImpl implements SellerService {
      * @return
      */
     @Override
-    public Seller getOneById(Long id) {
+    public Seller getOneById(String id) {
         return sellerMapper.selectByPrimaryKey(id);
     }
 
@@ -92,5 +97,12 @@ public class SellerServiceImpl implements SellerService {
         //所需的SQL语句类似 delete from tb_seller where id in(1,2,5,6)
         criteria.andIn("id",ids);
         return sellerMapper.deleteByExample(example);
+    }
+
+    @Override
+    public int updateStatus(String sellerId, String status) {
+        Seller seller = sellerMapper.selectByPrimaryKey(sellerId);
+        seller.setStatus(status);
+        return sellerMapper.updateByPrimaryKeySelective(seller);
     }
 }

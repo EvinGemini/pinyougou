@@ -29,4 +29,10 @@ app.service("sellerService",function($http){
         return $http.post("/seller/delete.shtml",ids);
     }
 
+    //修改状态
+    this.updateStatus=function(id,status){
+        return $http.post("/seller/status/" + id + "/" + status + ".shtml");
+    }
+
+
 });

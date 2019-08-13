@@ -31,7 +31,7 @@ public interface SellerService {
      * @param id
      * @return
      */
-    Seller getOneById(Long id);
+    Seller getOneById(String id);
 
     /***
      * 根据ID修改Seller信息
@@ -46,4 +46,6 @@ public interface SellerService {
      * @return
      */
     int deleteByIds(List<Long> ids);
+
+    int updateStatus(String sellerId, String status);
 }
