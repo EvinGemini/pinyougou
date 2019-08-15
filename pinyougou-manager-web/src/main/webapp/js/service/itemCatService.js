@@ -29,4 +29,9 @@ app.service("itemCatService",function($http){
         return $http.post("/itemCat/delete.shtml",ids);
     }
 
+    //根据父id查询ItemCat
+    this.getByParentId=function (id) {
+        return $http.post("/itemCat/parent/" + id + ".shtml");
+    }
+
 });

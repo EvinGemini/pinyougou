@@ -93,4 +93,11 @@ public class ItemCatServiceImpl implements ItemCatService {
         criteria.andIn("id",ids);
         return itemCatMapper.deleteByExample(example);
     }
+
+    @Override
+    public List<ItemCat> getByParentId(Long parentId) {
+        ItemCat itemCat = new ItemCat();
+        itemCat.setParentId(parentId);
+        return itemCatMapper.select(itemCat);
+    }
 }

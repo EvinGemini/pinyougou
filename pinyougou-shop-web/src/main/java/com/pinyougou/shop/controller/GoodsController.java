@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.pinyougou.http.Result;
 import com.pinyougou.model.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,6 +81,8 @@ public class GoodsController {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Result add(@RequestBody Goods goods){
         try {
+            //设置商家id
+            goods.setSellerId(SecurityContextHolder.getContext().getAuthentication().getName());
             //执行增加
             int acount = goodsService.add(goods);
 

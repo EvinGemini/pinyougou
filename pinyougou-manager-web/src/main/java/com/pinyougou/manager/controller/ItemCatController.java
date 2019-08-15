@@ -117,4 +117,12 @@ public class ItemCatController {
     public List<ItemCat> list() {
         return itemCatService.getAll();
     }
+
+    /**
+     * 根据父id查询商品分类
+     */
+    @RequestMapping(value = "/parent/{id}")
+    public List<ItemCat> getByParentId(@PathVariable("id")Long parentId) {
+        return itemCatService.getByParentId(parentId);
+    }
 }

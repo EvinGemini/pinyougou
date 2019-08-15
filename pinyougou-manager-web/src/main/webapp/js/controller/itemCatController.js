@@ -4,6 +4,29 @@
  ****/
 app.controller("itemCatController",function($scope,$http,$controller,itemCatService){
 
+    $scope.entity_1={"name":"顶级分类列表","parentId":0};
+    $scope.entity_2=null;
+    $scope.entity_3=null;
+
+
+    $scope.parentId=0;
+
+
+
+    $scope.grade = 1;
+
+    $scope.loadChild=function (item) {
+        $scope.grade+=1;
+        if ($scope.grade == 2) {
+            $scope.entity_2 = item
+            $scope.entity_3=null;
+        } else if ($scope.grade == 3) {
+            $scope.entity_3 = item
+        }
+
+
+    }
+
     //继承父控制器
     $controller("baseController",{$scope:$scope});
 
@@ -25,6 +48,7 @@ app.controller("itemCatController",function($scope,$http,$controller,itemCatServ
             //执行修改数据
             result = itemCatService.update($scope.entity);
         }else{
+            $scope.entity.parentId=$scope.parentId;//赋予上级ID
             //增加操作
             result = itemCatService.add($scope.entity);
         }
@@ -33,7 +57,7 @@ app.controller("itemCatController",function($scope,$http,$controller,itemCatServ
             //判断执行状态
             if(response.success){
                 //重新加载新的数据
-                $scope.reloadList();
+                $scope.getByParentId($scope.parentId);//重新加载
             }else{
                 //打印错误消息
                 alert(response.message);
@@ -59,5 +83,14 @@ app.controller("itemCatController",function($scope,$http,$controller,itemCatServ
                 alert(response.message);
             }
         });
+    }
+
+    //根据父id查询ItemCat
+    $scope.getByParentId=function (parentId) {
+        $scope.parentId = parentId;
+        itemCatService.getByParentId(parentId).success(function (response) {
+            $scope.list = response;
+        })
+
     }
 });

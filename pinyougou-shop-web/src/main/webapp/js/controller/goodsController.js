@@ -2,7 +2,7 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService){
+app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
@@ -25,6 +25,7 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
             //执行修改数据
             result = goodsService.update($scope.entity);
         }else{
+            $scope.entity.goodsDesc.introduction=editor.html();
             //增加操作
             result = goodsService.add($scope.entity);
         }
@@ -33,7 +34,9 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
             //判断执行状态
             if(response.success){
                 //重新加载新的数据
-                $scope.reloadList();
+                alert("增加成功");
+                $scope.entity={};
+                editor.html("");
             }else{
                 //打印错误消息
                 alert(response.message);
@@ -59,5 +62,32 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
                 alert(response.message);
             }
         });
+    };
+
+    $scope.entity={goodsDesc:{itemImages:[]}};
+
+    //图片上传
+    $scope.uploadFile=function () {
+        uploadService.uploadFile().success(function (response) {
+            uploadService.uploadFile().success(function (response) {
+                if(response.success){
+                    //设置图片访问地址
+                    $scope.image_entity.url=response.message;
+                }else{
+                    alert(response.message);
+                }
+            }).error(function() {
+                alert("上传发生错误");
+            });
+        });
+    }
+
+    //增加图片到列表中
+    $scope.add_image_entity=function(){
+        $scope.entity.goodsDesc.itemImages.push($scope.image_entity);
+    }
+
+    $scope.remove_image_entity=function (index) {
+        $scope.entity.goodsDesc.itemImages.splice(index,1);
     }
 });

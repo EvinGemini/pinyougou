@@ -1,19 +1,31 @@
 package com.pinyougou.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Table(name = "tb_goods")
 public class Goods implements Serializable {
+
+    // 0：未审核 1：已审核 2：审核未通过 3：关闭
+    public static final String GOODS_UNCHECKED = "0";
+    public static final String GOODS_CHECKED = "1";
+    public static final String GOODS_UNAPPROVE  = "2";
+    public static final String GOODS_CLOSE  = "3";
+
+
     /**
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    private GoodsDesc goodsDesc;
+
+    private List<Item> items;
 
     /**
      * 商家ID
@@ -393,5 +405,22 @@ public class Goods implements Serializable {
      */
     public void setIsDelete(String isDelete) {
         this.isDelete = isDelete == null ? null : isDelete.trim();
+    }
+
+
+    public GoodsDesc getGoodsDesc() {
+        return goodsDesc;
+    }
+
+    public void setGoodsDesc(GoodsDesc goodsDesc) {
+        this.goodsDesc = goodsDesc;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

@@ -46,4 +46,11 @@ public interface ItemCatService {
      * @return
      */
     int deleteByIds(List<Long> ids);
+
+    /**
+     * 根据父id查商品分类
+     * @param parentId
+     * @return
+     */
+    List<ItemCat> getByParentId(Long parentId);
 }

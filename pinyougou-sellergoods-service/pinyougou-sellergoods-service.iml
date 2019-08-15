@@ -57,6 +57,7 @@
     <orderEntry type="module" module-name="pinyougou-model" />
     <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
     <orderEntry type="module" module-name="pinyougou-common" />
+    <orderEntry type="library" name="Maven: org.csource.fastdfs:fastdfs:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.3.12.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.45" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.0.13" level="project" />
