@@ -2,7 +2,7 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService){
+app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService,itemCatService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
@@ -80,14 +80,46 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
                 alert("上传发生错误");
             });
         });
-    }
+    };
 
     //增加图片到列表中
     $scope.add_image_entity=function(){
         $scope.entity.goodsDesc.itemImages.push($scope.image_entity);
-    }
+    };
 
     $scope.remove_image_entity=function (index) {
         $scope.entity.goodsDesc.itemImages.splice(index,1);
-    }
+    };
+
+    //查询商品一级分类
+    $scope.selectItemCat1List = function (id) {
+        itemCatService.getByParentId(id).success(function (response) {
+            $scope.itemCat1List=response;
+            $scope.itemCat2List= null;
+            $scope.itemCat3List= null;
+            $scope.entity.typeTemplateId=null;
+        })
+    };
+    //查询商品二级分类
+    $scope.selectItemCat2List = function (id) {
+        itemCatService.getByParentId(id).success(function (response) {
+            $scope.itemCat2List=response;
+            $scope.itemCat3List= null;
+            $scope.entity.typeTemplateId=null;
+        })
+    };
+
+    //查询商品三级分类
+    $scope.selectItemCat3List = function (id) {
+        itemCatService.getByParentId(id).success(function (response) {
+            $scope.itemCat3List=response;
+        })
+    };
+
+    //监控三级分类id的变化，查询模板id
+    $scope.$watch("entity.category3Id",function (newValue, oldValue) {
+        itemCatService.findOne(newValue).success(function (response) {
+            $scope.entity.typeTemplateId=response.typeId;
+        })
+    })
 });
