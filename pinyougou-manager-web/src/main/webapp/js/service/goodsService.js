@@ -29,4 +29,8 @@ app.service("goodsService",function($http){
         return $http.post("/goods/delete.shtml",ids);
     }
 
+    this.updateStatus=function (ids, status) {
+        return $http.post("/goods/update/status.shtml?status=" + status,ids);
+    }
+
 });

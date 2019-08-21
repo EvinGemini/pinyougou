@@ -9,6 +9,11 @@ app.service("itemCatService",function($http){
         return $http.post("/itemCat/list.shtml?page="+page+"&size="+size,searchEntity);
     }
 
+    //查询所有分类列表
+    this.findItemCatList = function () {
+        return $http.get("/itemCat/list.shtml");
+    }
+
     //增加ItemCat
     this.add=function(entity){
         return $http.post("/itemCat/add.shtml",entity);

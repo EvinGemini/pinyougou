@@ -55,6 +55,38 @@ public class GoodsController {
         return new Result(false,"修改失败");
     }
 
+    @RequestMapping(value = "/update/status")
+    public Result updateStatus(@RequestBody List<Long> ids,String status) {
+        try {
+            int mcount = goodsService.updateStatus(ids,status);
+            if(mcount>0){
+                return new Result(true,"修改成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Result(false,"修改失败");
+    }
+
+    /***
+     * 审核操作
+     * @param ids
+     * @param status
+     * @return
+     */
+//    @RequestMapping(value = "/update/status")
+//    public Result updateStatus(@RequestBody List<Long> ids,String status){
+//        try {
+//            int mcount = goodsService.updateStatus(ids,status);
+//            if(mcount>0){
+//                return new Result(true);
+//            }
+//        } catch (Exception e) {
+//        }
+//        return  new Result(false,"审核失败");
+//    }
+
+
     /***
      * 根据ID查询Goods信息
      * @param id

@@ -45,6 +45,11 @@ public class GoodsController {
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Result modify(@RequestBody Goods goods){
         try {
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!name.equals(goods.getSellerId())) {
+                return new Result(false,"非法操作");
+            }
+
             //根据ID修改Goods信息
             int mcount = goodsService.updateGoodsById(goods);
             if(mcount>0){
@@ -106,6 +111,8 @@ public class GoodsController {
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public PageInfo<Goods> list(@RequestBody Goods goods,@RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                 @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        goods.setSellerId(name);
         return goodsService.getAll(goods,page, size);
     }
 

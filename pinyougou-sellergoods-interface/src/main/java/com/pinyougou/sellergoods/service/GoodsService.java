@@ -46,4 +46,6 @@ public interface GoodsService {
      * @return
      */
     int deleteByIds(List<Long> ids);
+
+    int updateStatus(List<Long> ids, String status);
 }

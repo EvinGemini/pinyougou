@@ -42,7 +42,7 @@ app.controller("baseController",function($scope){
     }
 
 
-    //将JSON字符数据提取拼接一个字符串
+    //将JSON字符数据提取拼接一个字符串,为了数据友好显示
     $scope.json2str=function (jsonstr,key) {
         //将字符转JSON
         var json = JSON.parse(jsonstr);
@@ -61,4 +61,27 @@ app.controller("baseController",function($scope){
 
         return result;
     }
+
+    //判断一个集合中是否存在某数据
+    // $scope.searchObjectByKey=function (list, key, value) {
+    //     $.each(list,function(index,element){
+    //         if (element[key] == value) {
+    //             alert(element[key]);
+    //             return angular.fromJson(element);
+    //         }
+    //     });
+    // }
+    $scope.searchObjectByKey=function (list,key,keyvalue) {
+        for(var i=0;i<list.length;i++){
+            if(list[i][key]==keyvalue){
+                return list[i];
+            }
+        }
+    }
+
+
 });
+
+app.config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode(true);
+}]);

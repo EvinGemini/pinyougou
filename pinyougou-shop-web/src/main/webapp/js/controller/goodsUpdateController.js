@@ -2,7 +2,7 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService,uploadService,itemCatService,typeTemplateService){
+app.controller("goodsUpdateController",function($scope,$http,$controller,$location,goodsService,uploadService,itemCatService,typeTemplateService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
@@ -47,12 +47,42 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
     }
 
     //根据ID查询信息
-    $scope.getById=function(id){
+    $scope.getById=function(){
+        var id = $location.search()["id"];
+        if (id == null) {
+            return;
+        }
         goodsService.findOne(id).success(function(response){
             //将后台的数据绑定到前台
             $scope.entity=response;
+
+            //查询2级分类
+            $scope.selectItemCat2List($scope.entity.category1Id);
+            $scope.selectItemCat3List($scope.entity.category2Id);
+            //加载富文本
+            editor.html($scope.entity.goodsDesc.introduction);
+            //转图片格式
+            $scope.entity.goodsDesc.itemImages = angular.fromJson($scope.entity.goodsDesc.itemImages);
+            //转扩展属性
+            $scope.entity.goodsDesc.customAttributeItems=angular.fromJson($scope.entity.goodsDesc.customAttributeItems);
+            //转规格属性
+            $scope.entity.goodsDesc.specificationItems = angular.fromJson($scope.entity.goodsDesc.specificationItems);
+            //转items的spec属性
+            $scope.entity.items.spec=angular.fromJson($scope.entity.items.spec);
+            $.each($scope.entity.items,function (index, element) {
+                element.spec=angular.fromJson(element.spec);
+            })
+
         });
-    }
+    };
+
+    $scope.checkAttributeValue = function(attributeName,attributeValue) {
+        var result = $scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems,"attributeName",attributeName);
+        if (result != null && result.attributeValue.indexOf(attributeValue) >= 0) {
+          return true;
+        }
+        return  false;
+    };
 
     //批量删除
     $scope.delete=function(){
@@ -130,7 +160,9 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
         if (newValue > 0) {
             typeTemplateService.findOne(newValue).success(function (response) {
                 $scope.entity.typeTemplate.brandIds = angular.fromJson(response.brandIds);
-                $scope.entity.goodsDesc.customAttributeItems=angular.fromJson(response.customAttributeItems);
+                if ($location.search()['id'] == null) {
+                    $scope.entity.goodsDesc.customAttributeItems=angular.fromJson(response.customAttributeItems);
+                }
             });
             typeTemplateService.getSpecList(newValue).success(function (response) {
                 $scope.specList=response;
@@ -138,7 +170,9 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService,
         }else {
             //清空品牌数据
             $scope.entity.typeTemplate= {brandIds:[]};
-            $scope.entity.goodsDesc.customAttributeItems=[];
+            if ($location.search()['id'] == null) {
+                $scope.entity.goodsDesc.customAttributeItems = [];
+            }
             //清空规格选项
             $scope.specList={};
         }

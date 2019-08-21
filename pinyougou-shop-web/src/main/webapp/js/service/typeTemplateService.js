@@ -29,4 +29,9 @@ app.service("typeTemplateService",function($http){
         return $http.post("/typeTemplate/delete.shtml",ids);
     }
 
+    //根据模板id，获取规格列表
+    this.getSpecList=function (id) {
+        return $http.get("/typeTemplate/specification/option/" + id + ".shtml");
+    }
+
 });

@@ -2,10 +2,15 @@
  * 定义一个控制层 controller
  * 发送HTTP请求从后台获取数据
  ****/
-app.controller("goodsController",function($scope,$http,$controller,goodsService){
+app.controller("goodsController",function($scope,$http,$controller,goodsService,itemCatService){
 
     //继承父控制器
     $controller("baseController",{$scope:$scope});
+
+    //商品状态
+    $scope.status=['未审核','已审核','审核未通过','关闭'];
+    //所有分类
+    $scope.itemCatList={};
 
     //获取所有的Goods信息
     $scope.getPage=function(page,size){
@@ -55,9 +60,37 @@ app.controller("goodsController",function($scope,$http,$controller,goodsService)
             //判断删除状态
             if(response.success){
                 $scope.reloadList();
+                $scope.selectids=[];
             }else{
                 alert(response.message);
             }
         });
     }
+
+    //查询分类
+    $scope.findItemCatList = function() {
+        itemCatService.findItemCatList().success(function (response) {
+            $.each(response,function (index, element) {
+                $scope.itemCatList[element.id]=element.name;
+            })
+        })
+
+    };
+
+    //修改状态
+    $scope.updateStatus=function (status) {
+        goodsService.updateStatus($scope.selectids,status).success(function (response) {
+            if (response.success) {
+                $scope.reloadList();
+                $scope.selectids=[];
+            } else {
+                alert(response.message);
+            }
+        }).error(function () {
+            alert("出错了！！！");
+        });
+    };
+
+
+
 });

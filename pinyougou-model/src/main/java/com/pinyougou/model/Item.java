@@ -9,6 +9,15 @@ import java.util.Date;
 
 @Table(name = "tb_item")
 public class Item implements Serializable {
+    //1-正常，2-下架，3-删除'
+    public static final String ITEM_STATUE_NORMAL = "1";
+    public static final String ITEM_STATUE_PULL_OFF_SHELVES = "2";
+    public static final String ITEM_STATUE_DELETE = "3";
+
+
+
+
+
     /**
      * 商品id，同时也是商品编号
      */

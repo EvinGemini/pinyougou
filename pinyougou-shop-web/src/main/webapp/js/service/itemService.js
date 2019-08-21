@@ -9,6 +9,8 @@ app.service("itemService",function($http){
         return $http.post("/item/list.shtml?page="+page+"&size="+size,searchEntity);
     }
 
+
+
     //增加Item
     this.add=function(entity){
         return $http.post("/item/add.shtml",entity);

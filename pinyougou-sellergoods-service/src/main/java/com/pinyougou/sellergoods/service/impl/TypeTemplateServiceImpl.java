@@ -1,20 +1,26 @@
 package com.pinyougou.sellergoods.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.mapper.SpecificationOptionMapper;
 import com.pinyougou.mapper.TypeTemplateMapper;
+import com.pinyougou.model.SpecificationOption;
 import com.pinyougou.model.TypeTemplate;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TypeTemplateServiceImpl implements TypeTemplateService {
 
     @Autowired
     private TypeTemplateMapper typeTemplateMapper;
+    @Autowired
+    private SpecificationOptionMapper specificationOptionMapper;
 
 	/**
 	 * 返回TypeTemplate全部列表
@@ -92,5 +98,19 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         //所需的SQL语句类似 delete from tb_typeTemplate where id in(1,2,5,6)
         criteria.andIn("id",ids);
         return typeTemplateMapper.deleteByExample(example);
+    }
+
+    @Override
+    public List<Map> getSpecificationOptionById(Long id) {
+        //根据模板id查询出对应规格列表
+        TypeTemplate typeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
+        List<Map> dataMap = JSON.parseArray(typeTemplate.getSpecIds(), Map.class);
+        for(Map map : dataMap) {
+            SpecificationOption specificationOption = new SpecificationOption();
+            specificationOption.setSpecId(Long.parseLong(map.get("id").toString()));
+            List<SpecificationOption> specificationOptionList = specificationOptionMapper.select(specificationOption);
+            map.put("options",specificationOptionList);
+        }
+        return dataMap;
     }
 }

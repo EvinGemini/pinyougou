@@ -33,5 +33,9 @@ app.service("itemCatService",function($http){
     this.getByParentId=function (id) {
         return $http.post("/itemCat/parent/" + id + ".shtml");
     }
+    //查询所有
+    this.findAllList=function () {
+        return $http.get("/itemCat/list.shtml");
+    }
 
 });

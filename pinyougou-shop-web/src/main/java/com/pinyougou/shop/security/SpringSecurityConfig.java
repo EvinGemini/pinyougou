@@ -55,13 +55,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //登录设置
         http.formLogin().loginPage("/shoplogin.html")           //登录跳转地址
                 .loginProcessingUrl("/login")                   //登录处理地址
-                //.defaultSuccessUrl("/admin/index.html",true)    //登录后始终跳转到后台首页
+                .defaultSuccessUrl("/admin/index.html",true)    //登录后始终跳转到后台首页
                 .successHandler(new AuthenticationSuccessHandler() {
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                         //响应数据封装
-                        Result result = new Result(true, "/admin/index.html");
-                        writerResult(response, result);
-
+//                        Result result = new Result(true, "/admin/index.html");
+//                        writerResult(response, result);
+                        response.sendRedirect("/admin/index.html");
 
                     }
                 })
