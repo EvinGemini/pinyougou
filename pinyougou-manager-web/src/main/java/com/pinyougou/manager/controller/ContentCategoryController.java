@@ -1,9 +1,9 @@
 package com.pinyougou.manager.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.content.service.ContentCategoryService;
 import com.pinyougou.http.Result;
 import com.pinyougou.model.ContentCategory;
-import com.pinyougou.sellergoods.service.ContentCategoryService;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;

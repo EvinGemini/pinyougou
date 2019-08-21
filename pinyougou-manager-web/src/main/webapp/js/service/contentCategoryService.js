@@ -3,6 +3,10 @@
  * 抽取发送请求的一部分代码
  * */
 app.service("contentCategoryService",function($http){
+    //查询所有
+    this.findAllList=function(){
+        return $http.get("/contentCategory/list.shtml");
+    }
 
     //查询列表
     this.findAll=function(page,size,searchEntity){

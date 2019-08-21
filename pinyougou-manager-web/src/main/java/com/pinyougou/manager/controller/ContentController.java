@@ -1,13 +1,13 @@
 package com.pinyougou.manager.controller;
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
+import com.pinyougou.content.service.ContentService;
 import com.pinyougou.http.Result;
 import com.pinyougou.model.Content;
-import com.pinyougou.sellergoods.service.ContentService;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 @RestController
 @RequestMapping(value = "/content")
 public class ContentController {
