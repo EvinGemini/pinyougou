@@ -7,6 +7,9 @@ import java.io.Serializable;
 
 @Table(name = "tb_content")
 public class Content implements Serializable {
+    public static final String CONTENT_STATUS_START="1";
+    public static final String CONTENT_STATUS_END="0";
+
     @Id
     @Column(name = "id")
     private Long id;

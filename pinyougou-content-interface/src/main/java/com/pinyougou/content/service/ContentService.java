@@ -53,4 +53,5 @@ public interface ContentService {
      * @return
      */
     List<Content> findByCategoryId(long categoryId);
+
 }
