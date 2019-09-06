@@ -10,6 +10,7 @@ app.controller("contentController",function($scope,$http,contentService){
     $scope.getByCategoryId=function (categoryid) {
         contentService.findByCategoryid(categoryid).success(function (response) {
             //存储所有广告
+            console.log(JSON.stringify(response));
             $scope.contentList[categoryid]=response;
         })
     }

@@ -1,11 +1,15 @@
 package com.pinyougou.model;
 
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.solr.core.mapping.Dynamic;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 @Table(name = "tb_item")
 public class Item implements Serializable {
@@ -16,19 +20,19 @@ public class Item implements Serializable {
 
 
 
-
-
     /**
      * 商品id，同时也是商品编号
      */
     @Id
     @Column(name = "id")
+    @Field
     private Long id;
 
     /**
      * 商品标题
      */
     @Column(name = "title")
+    @Field("item_title")
     private String title;
 
     /**
@@ -41,6 +45,7 @@ public class Item implements Serializable {
      * 商品价格，单位为：元
      */
     @Column(name = "price")
+    @Field("item_price")
     private BigDecimal price;
 
     @Column(name = "stock_count")
@@ -62,6 +67,7 @@ public class Item implements Serializable {
      * 商品图片
      */
     @Column(name = "image")
+    @Field("item_image")
     private String image;
 
     /**
@@ -101,6 +107,7 @@ public class Item implements Serializable {
     private String isDefault;
 
     @Column(name = "goods_id")
+    @Field("item_goodsid")
     private Long goodsId;
 
     @Column(name = "seller_id")
@@ -110,16 +117,38 @@ public class Item implements Serializable {
     private String cartThumbnail;
 
     @Column(name = "category")
+    @Field("item_category")
     private String category;
 
     @Column(name = "brand")
+    @Field("item_brand")
     private String brand;
 
     @Column(name = "spec")
     private String spec;
 
     @Column(name = "seller")
+    @Field("item_seller")
     private String seller;
+
+    /***
+     * @Dynamic:表示该属性对应的是一个动态域
+     * @Field(value = "item_spec_*"):表示动态域的前缀是item_spec_
+     *
+     * 创建动态域的时候，会将Map的可以作为动态域后面通配符匹配的部分，值作为域的值
+     *                  specMap:key=网络          value=联通3G
+     *                  specMap:key=机身内存      value=128G
+     *
+     *                  往Solr索引库中添加对应的动态域：
+     *                          域的名字：item_spec_网络
+     *                          域的值：联通3G
+     *
+     *                          域的名字：item_spec_机身内存
+     *                          域的值：128G
+     */
+    @Dynamic
+    @Field("item_spec_*")
+    private Map<String,String> specMap;
 
     private static final long serialVersionUID = 1L;
 
@@ -487,5 +516,13 @@ public class Item implements Serializable {
      */
     public void setSeller(String seller) {
         this.seller = seller == null ? null : seller.trim();
+    }
+
+    public Map<String, String> getSpecMap() {
+        return specMap;
+    }
+
+    public void setSpecMap(Map<String, String> specMap) {
+        this.specMap = specMap;
     }
 }
