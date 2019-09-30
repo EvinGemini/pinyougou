@@ -17,11 +17,6 @@ public class TypeTemplateController {
     @Reference
     private TypeTemplateService typeTemplateService;
 
-
-
-
-
-
     @GetMapping(value = "/specification/option/{id}")
     public List<Map> getSpecificationOptionById(@PathVariable("id")Long id) {
        return typeTemplateService.getSpecificationOptionById(id);

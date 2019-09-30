@@ -60,6 +60,12 @@
             <artifactId>spring-data-solr</artifactId>
         </dependency>
 
+        <!--FastJSON-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
 
         <!--dubbo-->
         <dependency>
